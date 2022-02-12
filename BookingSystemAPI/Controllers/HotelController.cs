@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookingSystemAPI.Data;
+using BookingSystemAPI.Model;
 using BookingSystemAPI.Model.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -40,7 +41,7 @@ namespace BookingSystemAPI.Controllers
             return Ok(objList);
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "GetHotel")]
         public IActionResult GetHotel(int id)
         {
 
@@ -56,7 +57,22 @@ namespace BookingSystemAPI.Controllers
             return Ok(objDto);
         }
 
-   
+
+        [HttpPost]
+        public IActionResult CreateHotel([FromBody] HotelDTO hotelDTO)
+        {
+            if (hotelDTO == null)
+            {
+                return BadRequest(ModelState);
+            }
+
+
+
+            var hotelObj = _mapper.Map<Hotel>(hotelDTO);
+
+            return CreatedAtRoute("GetHotel", new { HotelId = hotelObj.Id }, hotelObj);
+        }
+
 
     }
 }
