@@ -2,6 +2,7 @@
 using BookingSystemAPI.Data;
 using BookingSystemAPI.Model;
 using BookingSystemAPI.Model.Dtos;
+using BookingSystemAPI.Repository.IRepository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -19,11 +20,13 @@ namespace BookingSystemAPI.Controllers
     {
         private readonly ApplicationDbContext _db;
         private readonly IMapper _mapper;
+        private readonly IHotelRepo _hotelRepo;
 
-        public HotelController(ApplicationDbContext db, IMapper mapper)
+        public HotelController(ApplicationDbContext db, IMapper mapper /*IHotelRepo hotelRepo*/)
         {
             _db = db;
             _mapper = mapper;
+            //_hotelRepo = hotelRepo;
         }
 
         [HttpGet]
@@ -61,16 +64,15 @@ namespace BookingSystemAPI.Controllers
         [HttpPost]
         public IActionResult CreateHotel([FromBody] HotelDTO hotelDTO)
         {
+
             if (hotelDTO == null)
             {
                 return BadRequest(ModelState);
             }
-
-
-
+         
             var hotelObj = _mapper.Map<Hotel>(hotelDTO);
 
-            return CreatedAtRoute("GetHotel", new { HotelId = hotelObj.Id }, hotelObj);
+            return Ok(hotelObj);
         }
 
 

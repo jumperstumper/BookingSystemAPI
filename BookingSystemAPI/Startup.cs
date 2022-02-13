@@ -15,6 +15,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookingSystemAPI.Mapper;
+using BookingSystemAPI.Repository.IRepository;
+using BookingSystemAPI.Repository;
 
 namespace BookingSystemAPI
 {
@@ -32,6 +34,7 @@ namespace BookingSystemAPI
         {
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(
          Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<IHotelRepo, HotelRepo>();
             services.AddAutoMapper(typeof(BookingMappings));
             services.AddControllers();
             services.AddSwaggerGen(c =>
